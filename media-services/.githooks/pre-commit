@@ -1,0 +1,84 @@
+#!/bin/bash
+# .githooks/pre-commit - Git pre-commit hook to prevent secret leaks
+
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+GREEN='\033[0;32m'
+
+leaks_found=0
+
+# 1. Check for Private Keys
+if git diff --cached | grep -qE "BEGIN (RSA |EC |PGP |OPENSSH )?PRIV""ATE KEY"; then
+    echo -e "${RED}ERROR: Staged changes contain a PRIVATE KEY!${NC}"
+    leaks_found=1
+fi
+
+# 2. Check for Certificates (good practice to avoid committing public certs too)
+if git diff --cached | grep -qE "BEGIN CERT""IFICATE"; then
+    echo -e "${RED}ERROR: Staged changes contain a CERTIFICATE!${NC}"
+    leaks_found=1
+fi
+
+# 3. Check for specific private Tailscale domains (excluding the placeholder)
+# Matches added lines containing a .ts.net domain but ignores the allowed placeholder
+if git diff --cached | grep -E "^\+[^*#]*[a-zA-Z0-9.-]+\.ts\.net" | grep -qv "your-media-center.ts.net"; then
+    echo -e "${RED}ERROR: Staged changes contain a private Tailscale domain (.ts.net)!${NC}"
+    echo -e "Please sanitize your domain to 'your-media-center.ts.net' before committing."
+    leaks_found=1
+fi
+
+# 4. Check for Sonarr/Radarr/Prowlarr API keys in config files
+if git diff --cached | grep -qE "ApiKey>[a-zA-Z0-9]{32}<"; then
+    echo -e "${RED}ERROR: Staged changes contain an XML ApiKey element!${NC}"
+    leaks_found=1
+fi
+
+if [ $leaks_found -ne 0 ]; then
+    echo -e "${RED}Commit blocked. Please remove the secrets and try again.${NC}"
+    exit 1
+fi
+
+# 5. Check for Emojis in staged code
+if git diff --cached | python3 -c '
+import sys, re
+emoji_pattern = re.compile(r"[\U0001F300-\U0001F9FF\U00002600-\U000026FF\U00002700-\U000027BF]")
+found = False
+for line in sys.stdin:
+    if line.startswith("+") and not line.startswith("+++"):
+        if emoji_pattern.search(line):
+            print(f"Emote detected in added line: {line.strip()}")
+            found = True
+if found:
+    sys.exit(1)
+'; then
+    : # OK
+else
+    echo -e "${RED}ERROR: Staged changes contain emotes (emojis/symbols)!${NC}"
+    echo -e "${RED}Commit blocked. Please scrub all emotes and try again.${NC}"
+    exit 1
+fi
+
+# 6. Run Regression Tests
+echo "Running Regression Tests..."
+if [ -f "Makefile" ]; then
+    if ! make test; then
+        echo -e "${RED}ERROR: Regression tests failed!${NC}"
+        echo -e "${RED}Commit blocked. Please ensure passing tests.${NC}"
+        exit 1
+    fi
+else
+    # Fallback if Makefile is somehow missing
+    if [ -d "./tests" ]; then
+        for test_script in ./tests/test_*.sh; do
+            if [ -x "$test_script" ]; then
+                if ! "$test_script"; then
+                    echo -e "${RED}ERROR: Regression tests failed in $test_script!${NC}"
+                    echo -e "${RED}Commit blocked. Please fix the failing tests and try again.${NC}"
+                    exit 1
+                fi
+            fi
+        done
+    fi
+fi
+
+exit 0

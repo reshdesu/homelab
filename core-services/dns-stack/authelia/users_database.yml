@@ -1,0 +1,7 @@
+users:
+  reshdesu:
+    displayname: "Resh Desu"
+    password: "$argon2id$v=19$m=65536,t=3,p=4$r5H2QT/w+7TkmNzBxJaAEw$mLSzNG04Vv4b3fzz/5XtUPF/42fJWXcupAuS2aYgyEA"
+    email: reshdesu@loki.lab
+    groups:
+      - admins

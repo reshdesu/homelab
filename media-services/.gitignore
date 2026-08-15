@@ -1,0 +1,13 @@
+# Ignore certificates and private keys
+certs/*
+!certs/README.md
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore Docker configurations and local environment variables
+arr-stack/config/
+arr-stack/.env
+arr-stack/gluetun/
+

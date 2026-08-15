@@ -1,0 +1,79 @@
+services:
+  # --------------------------------------------------------
+  # Pi-hole: Network-wide Ad Blocking
+  # --------------------------------------------------------
+  pihole:
+    image: pihole/pihole:latest
+    container_name: pihole
+    environment:
+      - TZ=America/New_York
+      - WEBPASSWORD=""
+      - FTLCONF_dns_listeningMode=ALL
+      - FTLCONF_webserver_port=8080
+      # Point upstream DNS to our local Unbound container instead of Google!
+      - PIHOLE_DNS_=127.0.0.1#5335 
+    volumes:
+      - './etc-pihole:/etc/pihole'
+      - './etc-dnsmasq.d:/etc/dnsmasq.d'
+    network_mode: host # Use host networking to easily bind to port 53 and see real client IPs
+    restart: unless-stopped
+    depends_on:
+      - unbound
+
+  # --------------------------------------------------------
+  # Unbound: Recursive Privacy DNS
+  # --------------------------------------------------------
+  unbound:
+    image: mvance/unbound:latest
+    container_name: unbound
+    ports:
+      - "127.0.0.1:5335:53/tcp"
+      - "127.0.0.1:5335:53/udp"
+    restart: unless-stopped
+
+  # --------------------------------------------------------
+  # Uptime Kuma: Network Monitoring Dashboard
+  # --------------------------------------------------------
+  uptime-kuma:
+    image: louislam/uptime-kuma:2
+    container_name: uptime-kuma
+    volumes:
+      - ./uptime-kuma-data:/app/data
+    network_mode: host # So Caddy can route to it on 127.0.0.1:3001
+    restart: unless-stopped
+
+  # --------------------------------------------------------
+  # Authelia: Single Sign-On (SSO) Provider
+  # --------------------------------------------------------
+  authelia:
+    image: authelia/authelia:latest
+    container_name: authelia
+    volumes:
+      - ./authelia:/config
+    network_mode: host # Binds to 9091
+    restart: unless-stopped
+
+  # --------------------------------------------------------
+  # Caddy: Reverse Proxy (The Front Door)
+  # --------------------------------------------------------
+  caddy:
+    image: caddy:latest
+    container_name: caddy
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./caddy-data:/data
+      - ./caddy-config:/config
+      - ./homepage:/srv/homepage
+    network_mode: host # Takes over 80 and 443
+    restart: unless-stopped
+
+  # --------------------------------------------------------
+  # Watchtower: Automated Container Updates
+  # --------------------------------------------------------
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 86400 --cleanup
+    restart: unless-stopped

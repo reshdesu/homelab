@@ -1,0 +1,39 @@
+{
+    http_port 80
+    https_port 443
+}
+
+# Authelia Portal
+home.loki.lab {
+    forward_auth 127.0.0.1:9091 {
+        uri /api/verify?rd=https://auth.loki.lab
+    }
+    root * /srv/homepage
+    file_server
+    tls internal
+}
+
+auth.loki.lab {
+    reverse_proxy 127.0.0.1:9091
+    tls internal
+}
+
+# Pi-hole
+pihole.loki.lab {
+    forward_auth 127.0.0.1:9091 {
+        uri /api/verify?rd=https://auth.loki.lab
+        copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+    }
+    reverse_proxy 127.0.0.1:8080
+    tls internal
+}
+
+# Uptime Kuma
+kuma.loki.lab {
+    forward_auth 127.0.0.1:9091 {
+        uri /api/verify?rd=https://auth.loki.lab
+        copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+    }
+    reverse_proxy 127.0.0.1:3001
+    tls internal
+}

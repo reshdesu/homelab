@@ -1,0 +1,13 @@
+{
+  "files": [
+    {"file": "/workspace/tests/docker_test_runner.sh", "percent_covered": "0.00", "covered_lines": "0", "total_lines": "23"},
+    {"file": "/workspace/tests/test_init_env.sh", "percent_covered": "0.00", "covered_lines": "0", "total_lines": "41"}
+  ],
+  "percent_covered": "0.00",
+  "covered_lines": 0,
+  "total_lines": 64,
+  "percent_low": 25,
+  "percent_high": 75,
+  "command": "docker_test_runner.sh",
+  "date": "2026-07-18 00:01:01"
+}
