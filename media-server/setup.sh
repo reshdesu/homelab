@@ -38,6 +38,21 @@ if [ -f "../caddy/Caddyfile" ]; then
             sudo sed -i "s/your-media-center\.ts\.net/$TAILSCALE_DOMAIN/g" /etc/caddy/Caddyfile
         fi
     fi
+
+    # Prompt for Network Node IP if running interactively
+    if [ -z "$NETWORK_NODE_IP" ]; then
+        if [ -n "$DISABLE_WHIPTAIL" ]; then
+            NETWORK_NODE_IP="192.168.50.243"
+        elif command -v whiptail >/dev/null 2>&1; then
+            NETWORK_NODE_IP=$(whiptail --title "Network Node IP" --inputbox "Enter the IP address of your Network Node (Pi-hole/Kuma):" 10 60 "192.168.50.243" 3>&1 1>&2 2>&3 || echo "192.168.50.243")
+        else
+            read -p "Enter Network Node IP [default 192.168.50.243]: " NETWORK_NODE_IP
+            NETWORK_NODE_IP=${NETWORK_NODE_IP:-192.168.50.243}
+        fi
+    fi
+
+    echo "Configuring Caddy for Network Node IP: $NETWORK_NODE_IP"
+    sudo sed -i "s/NETWORK_NODE_IP/$NETWORK_NODE_IP/g" /etc/caddy/Caddyfile
 else
     echo "Error: Caddyfile not found in ../caddy/"
     exit 1
@@ -76,6 +91,10 @@ if [ -d "../dashboard" ]; then
     echo "Deploying dashboard static homepage to /var/www/dashboard..."
     sudo mkdir -p /var/www/dashboard
     sudo cp -r ../dashboard/* /var/www/dashboard/
+    if [ -n "$TAILSCALE_DOMAIN" ]; then
+        echo "Updating Dashboard HTML links to use Tailscale domain: $TAILSCALE_DOMAIN"
+        sudo sed -i "s/your-media-center\.ts\.net/$TAILSCALE_DOMAIN/g" /var/www/dashboard/index.html
+    fi
     sudo chown -R caddy:caddy /var/www/dashboard
 fi
 
