@@ -26,8 +26,8 @@ sudo mkdir -p /etc/caddy
 sudo mkdir -p /var/log/caddy
 
 # Copy files
-if [ -f "./configs/caddy/Caddyfile" ]; then
-    sudo cp ./configs/caddy/Caddyfile /etc/caddy/Caddyfile
+if [ -f "../caddy/Caddyfile" ]; then
+    sudo cp ../caddy/Caddyfile /etc/caddy/Caddyfile
     echo "Copied Caddyfile to /etc/caddy/Caddyfile"
 
     # Automatically configure actual Tailscale domain if running
@@ -39,7 +39,7 @@ if [ -f "./configs/caddy/Caddyfile" ]; then
         fi
     fi
 else
-    echo "Error: Caddyfile not found in ./configs/caddy/"
+    echo "Error: Caddyfile not found in ../caddy/"
     exit 1
 fi
 
@@ -72,10 +72,10 @@ fi
 sudo chown -R caddy:caddy /etc/caddy /var/log/caddy /var/lib/caddy
 
 # Deploy dashboard static homepage
-if [ -d "./dashboard" ]; then
+if [ -d "../dashboard" ]; then
     echo "Deploying dashboard static homepage to /var/www/dashboard..."
     sudo mkdir -p /var/www/dashboard
-    sudo cp -r ./dashboard/* /var/www/dashboard/
+    sudo cp -r ../dashboard/* /var/www/dashboard/
     sudo chown -R caddy:caddy /var/www/dashboard
 fi
 
