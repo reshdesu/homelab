@@ -10,17 +10,17 @@ This file serves as the core brain for this repository. If you are an AI assista
 ## Server Nodes
 The homelab currently consists of two primary nodes:
 
-### 1. Media Node - The Media & Proxy Node
+### 1. Media Server - The Media & Proxy Node
 - **Role**: Serves as the primary entry point (Caddy Reverse Proxy), hosts the static Dashboard UI, and runs the Media Stack.
-- **Repository Path**: `media-services/`
+- **Repository Path**: `media-server/`
 - **Key Services**:
   - **Caddy** (Global Reverse Proxy): Runs as a systemd service. Configuration is at `caddy/Caddyfile`.
   - **Dashboard**: Static HTML/CSS hosted at `/var/www/dashboard` (source in `dashboard/`).
-  - **Arr Stack**: Sonarr, Radarr, Prowlarr, SABnzbd, Plex. (Runs via Docker in `media-services/arr-stack/`).
+  - **Arr Stack**: Sonarr, Radarr, Prowlarr, SABnzbd, Plex. (Runs via Docker in `media-server/arr-stack/`).
 
-### 2. Network Node - The Network Node
+### 2. Network - The Network Node
 - **Role**: Hosts core DNS, SSO, and monitoring services.
-- **Repository Path**: `network-services/`
+- **Repository Path**: `network/`
 - **Key Services**:
   - **Pi-hole**: Port 8080.
   - **Uptime Kuma**: Port 3001.
@@ -36,5 +36,5 @@ Because Uptime Kuma, Pi-hole (v6 API), and Authelia do not support sub-directory
 
 ## Deployment & Setup
 - The master installer script is located at `./setup.sh` at the repository root.
-- Running `./setup.sh` opens an interactive UI to deploy either the Media Node or the Network Node on a fresh OS installation.
+- Running `./setup.sh` opens an interactive UI to deploy either the Media Server or the Network node on a fresh OS installation.
 - **Never commit `arr-stack/config`** (live application data) to Git to avoid bloating the repository.
