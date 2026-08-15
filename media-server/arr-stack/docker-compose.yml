@@ -59,6 +59,8 @@ services:
     <<: *default-logging
     image: lscr.io/linuxserver/prowlarr:latest
     container_name: prowlarr
+    profiles:
+      - docker-arr
     environment:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
@@ -73,6 +75,8 @@ services:
     <<: *default-logging
     image: lscr.io/linuxserver/sonarr:latest
     container_name: sonarr
+    profiles:
+      - docker-arr
     environment:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
@@ -88,6 +92,8 @@ services:
     <<: *default-logging
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
+    profiles:
+      - docker-arr
     environment:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
