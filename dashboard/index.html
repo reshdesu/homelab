@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Odin Server</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Odin Server</h1>
+            <div class="search-container">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" id="searchInput" placeholder="Search apps..." autocomplete="off" autofocus>
+            </div>
+        </header>
+
+        <main class="grid" id="appGrid">
+            <!-- Infrastructure -->
+            <a href="https://your-media-center.ts.net:8081/admin" class="app-card" data-name="pi-hole dns network infrastructure ad blocker">
+                <div class="app-icon">
+                    <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/pi-hole.png" alt="Pi-hole">
+                </div>
+                <div class="app-info">
+                    <h2>Pi-hole</h2>
+                    <p>DNS & Ad Blocker</p>
+                </div>
+            </a>
+
+            <a href="https://your-media-center.ts.net:3001" class="app-card" data-name="uptime kuma network monitor status">
+                <div class="app-icon">
+                    <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/uptime-kuma.png" alt="Uptime Kuma">
+                </div>
+                <div class="app-info">
+                    <h2>Uptime Kuma</h2>
+                    <p>Network Monitor</p>
+                </div>
+            </a>
+
+            <a href="https://your-media-center.ts.net:9091" class="app-card" data-name="authelia single sign on sso security">
+                <div class="app-icon">
+                    <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/authelia.png" alt="Authelia">
+                </div>
+                <div class="app-info">
+                    <h2>Authelia</h2>
+                    <p>Single Sign-On</p>
+                </div>
+            </a>
+
+            <!-- Media -->
+            <a href="/sonarr" class="app-card" data-name="sonarr tv shows media television">
+                <div class="app-icon">
+                    <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/sonarr.png" alt="Sonarr">
+                </div>
+                <div class="app-info">
+                    <h2>Sonarr</h2>
+                    <p>TV Shows</p>
+                </div>
+            </a>
+
+            <a href="/radarr" class="app-card" data-name="radarr movies cinema film">
+                <div class="app-icon">
+                    <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/radarr.png" alt="Radarr">
+                </div>
+                <div class="app-info">
+                    <h2>Radarr</h2>
+                    <p>Movies</p>
+                </div>
+            </a>
+
+            <a href="/prowlarr" class="app-card" data-name="prowlarr indexers torrents usenet">
+                <div class="app-icon">
+                    <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/prowlarr.png" alt="Prowlarr">
+                </div>
+                <div class="app-info">
+                    <h2>Prowlarr</h2>
+                    <p>Indexers</p>
+                </div>
+            </a>
+
+            <a href="/plex" class="app-card" data-name="plex media server streaming video">
+                <div class="app-icon">
+                    <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/plex.png" alt="Plex">
+                </div>
+                <div class="app-info">
+                    <h2>Plex</h2>
+                    <p>Media Server</p>
+                </div>
+            </a>
+        </main>
+    </div>
+
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const cards = document.querySelectorAll('.app-card');
+
+        searchInput.addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            cards.forEach(card => {
+                const name = card.getAttribute('data-name');
+                if (name.includes(query)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

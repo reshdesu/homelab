@@ -1,0 +1,64 @@
+# Caddy configuration for secure local Arr stack access
+# Replace your-media-center.ts.net with your actual Tailscale domain, local IP, or public domain
+your-media-center.ts.net {
+    tls {
+        get_certificate tailscale
+    }
+
+    # Plex (internal proxy for status check)
+    reverse_proxy /plex* localhost:32400
+
+    # Sonarr
+    reverse_proxy /sonarr* localhost:8989
+
+    # Radarr
+    reverse_proxy /radarr* localhost:7878
+
+    # Prowlarr
+    reverse_proxy /prowlarr* localhost:9696
+
+    # SABnzbd
+    reverse_proxy /sabnzbd* localhost:8080
+
+    # qBittorrent
+    reverse_proxy /qbittorrent* localhost:8082
+
+    # Bazarr
+    reverse_proxy /bazarr* localhost:6767
+
+    # Pi-hole Cached Route
+    redir /admin* https://your-media-center.ts.net:8081/admin
+
+    # Legacy Cached Routes
+    redir /auth* https://your-media-center.ts.net:9091
+    redir /kuma* https://your-media-center.ts.net:3001
+    redir /dashboard* https://your-media-center.ts.net:3001/dashboard
+
+    # Serve static dashboard for the root domain /
+    root * /var/www/dashboard
+    file_server
+}
+
+# Pi-hole (Loki) - Dedicated Port
+your-media-center.ts.net:8081 {
+    tls {
+        get_certificate tailscale
+    }
+    reverse_proxy CORE_NODE_IP:8080
+}
+
+# Uptime Kuma (Loki) - Dedicated Port
+your-media-center.ts.net:3001 {
+    tls {
+        get_certificate tailscale
+    }
+    reverse_proxy CORE_NODE_IP:3001
+}
+
+# Authelia (Loki) - Dedicated Port
+your-media-center.ts.net:9091 {
+    tls {
+        get_certificate tailscale
+    }
+    reverse_proxy CORE_NODE_IP:9091
+}
