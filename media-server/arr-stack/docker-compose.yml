@@ -45,7 +45,7 @@ services:
       - TZ=${TZ:-UTC}
       - WEBUI_PORT=8080
     volumes:
-      - ./config/qbittorrent:/config
+      - ${CONFIG_ROOT:-/home/reshdesu/data/config}/qbittorrent:/config
       # Mount the entire media root so qBittorrent and the Arrs share the same mount, allowing hardlinks
       - ${MEDIA_ROOT:-/mnt/media}:${MEDIA_ROOT:-/mnt/media}
     ports:
@@ -64,7 +64,7 @@ services:
       - PGID=${PGID:-1000}
       - TZ=${TZ:-UTC}
     volumes:
-      - ./config/prowlarr:/config
+      - ${CONFIG_ROOT:-/home/reshdesu/data/config}/prowlarr:/config
     ports:
       - 9696:9696
     restart: unless-stopped
@@ -78,7 +78,7 @@ services:
       - PGID=${PGID:-1000}
       - TZ=${TZ:-UTC}
     volumes:
-      - ./config/sonarr:/config
+      - ${CONFIG_ROOT:-/home/reshdesu/data/config}/sonarr:/config
       - ${MEDIA_ROOT:-/mnt/media}:${MEDIA_ROOT:-/mnt/media}
     ports:
       - 8989:8989
@@ -93,7 +93,7 @@ services:
       - PGID=${PGID:-1000}
       - TZ=${TZ:-UTC}
     volumes:
-      - ./config/radarr:/config
+      - ${CONFIG_ROOT:-/home/reshdesu/data/config}/radarr:/config
       - ${MEDIA_ROOT:-/mnt/media}:${MEDIA_ROOT:-/mnt/media}
     ports:
       - 7878:7878
@@ -110,7 +110,7 @@ services:
       - PGID=${PGID:-1000}
       - TZ=${TZ:-UTC}
     volumes:
-      - ./config/bazarr:/config
+      - ${CONFIG_ROOT:-/home/reshdesu/data/config}/bazarr:/config
       - ${MEDIA_ROOT:-/mnt/media}:${MEDIA_ROOT:-/mnt/media}
     ports:
       - 6767:6767
@@ -125,7 +125,7 @@ services:
       - PGID=${PGID:-1000}
       - TZ=${TZ:-UTC}
     volumes:
-      - ./config/sabnzbd:/config
+      - ${CONFIG_ROOT:-/home/reshdesu/data/config}/sabnzbd:/config
       - ${MEDIA_ROOT:-/mnt/media}:${MEDIA_ROOT:-/mnt/media}
     ports:
       - 8080:8080
@@ -142,7 +142,7 @@ services:
       - TZ=${TZ:-UTC}
       - VERSION=latest
     volumes:
-      - ./config/plex:/config
+      - ${CONFIG_ROOT:-/home/reshdesu/data/config}/plex:/config
       - ${MEDIA_ROOT:-/mnt/media}:${MEDIA_ROOT:-/mnt/media}
     devices:
       - /dev/dri:/dev/dri # Passes through host GPU for hardware transcoding (Plex Pass required)

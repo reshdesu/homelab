@@ -24,7 +24,7 @@ if [ "$NODE" = "Media-Server" ]; then
     echo "=== Starting automated deployment for Media Server ==="
     cd media-server
     ./setup.sh
-    echo "🚀 Booting Media Docker Stack..."
+    echo "Booting Media Docker Stack..."
     cd arr-stack && docker compose up -d
 elif [ "$NODE" = "Network" ]; then
     echo "=== Starting automated deployment for Network ==="
