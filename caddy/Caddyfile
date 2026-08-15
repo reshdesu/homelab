@@ -44,7 +44,7 @@ your-media-center.ts.net:8081 {
     tls {
         get_certificate tailscale
     }
-    reverse_proxy CORE_NODE_IP:8080
+    reverse_proxy NETWORK_NODE_IP:8080
 }
 
 # Uptime Kuma (Loki) - Dedicated Port
@@ -52,7 +52,7 @@ your-media-center.ts.net:3001 {
     tls {
         get_certificate tailscale
     }
-    reverse_proxy CORE_NODE_IP:3001
+    reverse_proxy NETWORK_NODE_IP:3001
 }
 
 # Authelia (Loki) - Dedicated Port
@@ -60,5 +60,5 @@ your-media-center.ts.net:9091 {
     tls {
         get_certificate tailscale
     }
-    reverse_proxy CORE_NODE_IP:9091
+    reverse_proxy NETWORK_NODE_IP:9091
 }

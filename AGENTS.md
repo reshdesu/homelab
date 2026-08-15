@@ -18,16 +18,16 @@ The homelab currently consists of two primary nodes:
   - **Dashboard**: Static HTML/CSS hosted at `/var/www/dashboard` (source in `dashboard/`).
   - **Arr Stack**: Sonarr, Radarr, Prowlarr, SABnzbd, Plex. (Runs via Docker in `media-services/arr-stack/`).
 
-### 2. Core Node - The Core Network Node
+### 2. Network Node - The Network Node
 - **Role**: Hosts core DNS, SSO, and monitoring services.
-- **Repository Path**: `core-services/`
+- **Repository Path**: `network-services/`
 - **Key Services**:
   - **Pi-hole**: Port 8080.
   - **Uptime Kuma**: Port 3001.
   - **Authelia**: Port 9091.
 
 ## Caddy Reverse Proxy & Port Strategy
-Because Uptime Kuma, Pi-hole (v6 API), and Authelia do not support sub-directory routing (`/path/`), Caddy on the Media Node is configured to reverse-proxy the Core Node's services onto **dedicated ports** on the Tailscale domain:
+Because Uptime Kuma, Pi-hole (v6 API), and Authelia do not support sub-directory routing (`/path/`), Caddy on the Media Node is configured to reverse-proxy the Network Node's services onto **dedicated ports** on the Tailscale domain:
 
 - **Dashboard**: `https://<tailscale-domain>/`
 - **Pi-hole**: `https://<tailscale-domain>:8081/admin` (Note: Uses 8081 because SABnzbd natively uses 8080 on the Media Node).
@@ -36,5 +36,5 @@ Because Uptime Kuma, Pi-hole (v6 API), and Authelia do not support sub-directory
 
 ## Deployment & Setup
 - The master installer script is located at `./setup.sh` at the repository root.
-- Running `./setup.sh` opens an interactive UI to deploy either the Media Node or the Core Node on a fresh OS installation.
+- Running `./setup.sh` opens an interactive UI to deploy either the Media Node or the Network Node on a fresh OS installation.
 - **Never commit `arr-stack/config`** (live application data) to Git to avoid bloating the repository.
