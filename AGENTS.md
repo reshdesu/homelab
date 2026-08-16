@@ -22,9 +22,10 @@ The homelab currently consists of two primary nodes:
 - **Role**: Hosts core DNS, SSO, and monitoring services.
 - **Repository Path**: `network/`
 - **Key Services**:
-  - **Pi-hole**: Port 8080.
+  - **Pi-hole**: Port 8081.
   - **Uptime Kuma**: Port 3001.
   - **Authelia**: Port 9091.
+  - **Audiobookshelf**: Port 13378.
 
 - **Prowlarr Integration**: Prowlarr communicates with Sonarr and Radarr via container hostnames (`http://sonarr:8989/sonarr` and `http://radarr:7878/radarr`). The `/sonarr` and `/radarr` sub-paths MUST be appended to the base URL in Prowlarr's Application settings to match the `<UrlBase>` defined in Sonarr/Radarr `config.xml`, avoiding HTTP 307 redirects.
 

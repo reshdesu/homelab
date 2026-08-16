@@ -160,3 +160,18 @@ services:
       # Check for updates every day at 3:17 AM to avoid registry rate limits
       - WATCHTOWER_SCHEDULE=0 17 3 * * *
     restart: unless-stopped
+
+  audiobookshelf:
+    <<: *default-logging
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    container_name: audiobookshelf
+    environment:
+      - AUDIOBOOKSHELF_TYPE=single-user
+    volumes:
+      - ${CONFIG_ROOT:-/home/reshdesu/data/config}/audiobookshelf/config:/config
+      - ${CONFIG_ROOT:-/home/reshdesu/data/config}/audiobookshelf/metadata:/metadata
+      - ${MEDIA_ROOT:-/mnt/media}/audiobooks:/audiobooks
+      - ${MEDIA_ROOT:-/mnt/media}/podcasts:/podcasts
+    ports:
+      - 8788:80
+    restart: unless-stopped

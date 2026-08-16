@@ -62,3 +62,11 @@ your-media-center.ts.net:9091 {
     }
     reverse_proxy NETWORK_NODE_IP:9091
 }
+
+# Audiobookshelf - Dedicated Port
+your-media-center.ts.net:13378 {
+    tls {
+        get_certificate tailscale
+    }
+    reverse_proxy localhost:8788
+}
