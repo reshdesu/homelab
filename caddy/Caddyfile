@@ -29,6 +29,9 @@ your-media-center.ts.net {
     # Readarr
     reverse_proxy /readarr* localhost:8787
 
+    # Audiobookshelf
+    reverse_proxy /audiobookshelf* localhost:8788
+
     # Pi-hole Cached Route
     redir /admin* https://your-media-center.ts.net:8081/admin
 
