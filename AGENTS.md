@@ -26,6 +26,8 @@ The homelab currently consists of two primary nodes:
   - **Uptime Kuma**: Port 3001.
   - **Authelia**: Port 9091.
 
+- **Prowlarr Integration**: Prowlarr communicates with Sonarr and Radarr via container hostnames (`http://sonarr:8989/sonarr` and `http://radarr:7878/radarr`). The `/sonarr` and `/radarr` sub-paths MUST be appended to the base URL in Prowlarr's Application settings to match the `<UrlBase>` defined in Sonarr/Radarr `config.xml`, avoiding HTTP 307 redirects.
+
 ## Caddy Reverse Proxy & Port Strategy
 Because Uptime Kuma, Pi-hole (v6 API), and Authelia do not support sub-directory routing (`/path/`), Caddy on the Media Node is configured to reverse-proxy the Network Node's services onto **dedicated ports** on the Tailscale domain:
 
