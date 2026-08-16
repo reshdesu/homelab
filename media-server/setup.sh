@@ -127,4 +127,5 @@ if [ -f "$PROWLARR_DB" ] && command -v sqlite3 >/dev/null 2>&1; then
     echo "Enforcing correct UrlBase paths in Prowlarr database..."
     sqlite3 "$PROWLARR_DB" "UPDATE Applications SET Settings = replace(Settings, '\"baseUrl\": \"http://sonarr:8989\"', '\"baseUrl\": \"http://sonarr:8989/sonarr\"');" 2>/dev/null || true
     sqlite3 "$PROWLARR_DB" "UPDATE Applications SET Settings = replace(Settings, '\"baseUrl\": \"http://radarr:7878\"', '\"baseUrl\": \"http://radarr:7878/radarr\"');" 2>/dev/null || true
+    sqlite3 "$PROWLARR_DB" "UPDATE DownloadClients SET Settings = replace(Settings, '\"host\": \"localhost\"', '\"host\": \"sabnzbd\"');" 2>/dev/null || true
 fi
