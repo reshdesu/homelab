@@ -175,3 +175,18 @@ services:
     ports:
       - 8788:80
     restart: unless-stopped
+
+  readarr:
+    <<: *default-logging
+    image: lscr.io/linuxserver/readarr:nightly-version-0.4.19.2811
+    container_name: readarr
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-UTC}
+    volumes:
+      - ${CONFIG_ROOT:-/home/reshdesu/data/config}/readarr:/config
+      - ${MEDIA_ROOT:-/mnt/media}:${MEDIA_ROOT:-/mnt/media}
+    ports:
+      - 8787:8787
+    restart: unless-stopped

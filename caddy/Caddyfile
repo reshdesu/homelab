@@ -26,6 +26,9 @@ your-media-center.ts.net {
     # Bazarr
     reverse_proxy /bazarr* localhost:6767
 
+    # Readarr
+    reverse_proxy /readarr* localhost:8787
+
     # Pi-hole Cached Route
     redir /admin* https://your-media-center.ts.net:8081/admin
 
