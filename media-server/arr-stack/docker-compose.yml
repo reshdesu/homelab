@@ -178,7 +178,7 @@ services:
 
   readarr:
     <<: *default-logging
-    image: lscr.io/linuxserver/readarr:nightly-version-0.4.19.2811
+    image: lscr.io/linuxserver/readarr:develop-version-0.4.18.2805
     container_name: readarr
     environment:
       - PUID=${PUID:-1000}
