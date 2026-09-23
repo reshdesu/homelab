@@ -5,8 +5,9 @@ your-media-center.ts.net {
         get_certificate tailscale
     }
 
-    # Plex (internal proxy for status check)
-    reverse_proxy /plex* localhost:32400
+    # Plex
+    redir /plex* /web/index.html
+    reverse_proxy /web* localhost:32400
 
     # Sonarr
     reverse_proxy /sonarr* localhost:8989
